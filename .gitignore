@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+crunchyroll
+crunchyroll.so
+crunchyroll.dylib
+crunchyroll.dll
+crunchyroll.a
+crunchyroll.lib
+crunchyroll-test-*
+*.exe
+*.o
+*.obj
+*.lst
+dub.selections.json
