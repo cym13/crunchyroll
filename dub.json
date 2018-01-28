@@ -1,0 +1,12 @@
+{
+	"name": "crunchyroll",
+	"authors": [
+		"cym13"
+	],
+	"dependencies": {
+		"asdf": "~>0.1.7"
+	},
+	"description": "Crunchyroll command-line viewer",
+	"copyright": "Copyright © 2018, Cédric Picard",
+	"license": "GPLv3"
+}
