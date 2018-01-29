@@ -100,7 +100,15 @@ int main(string[] args) {
         record = recordSearch[0];
     }
     else {
-        writeln("* Found ", recordSearch.length, " matching animes.\n");
+        writeln("* Recently seen:");
+
+        seen.byKey
+            .array
+            .retro
+            .take(5)
+            .each!(a => writeln("\t", a.name, " (", seen[a], ")"));
+
+        writeln("\n* Found ", recordSearch.length, " matching animes.\n");
 
         recordSearch.enumerate.each!((l, r) => writeln(l, "\t", r.name));
 
@@ -128,7 +136,9 @@ int main(string[] args) {
         seen[record] = 0;
     }
 
-    writeln("* Playing episode ", seen[record], " from ", record.name);
+    writeln("* Playing episode ", seen[record] + 1,
+            " from ", record.name,
+            " : http://www.crunchyroll.com" ~ record.link);
 
     auto toSee = record.episodeList
                        .drop(seen[record])
