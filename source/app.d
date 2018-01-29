@@ -136,13 +136,13 @@ int main(string[] args) {
         seen[record] = 0;
     }
 
-    writeln("* Playing episode ", seen[record] + 1,
-            " from ", record.name,
-            " : http://www.crunchyroll.com" ~ record.link);
-
     auto toSee = record.episodeList
                        .drop(seen[record])
                        .takeOne;
+
+    writeln("* Playing episode ", seen[record] + 1,
+            " from ", record.name,
+            ": " ~ toSee.front);
 
     if (toSee.length == 0) {
         writeln("* No episode found");
