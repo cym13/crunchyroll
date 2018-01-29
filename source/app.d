@@ -20,7 +20,7 @@ auto search(RecordRange)(RecordRange records, string query) {
 }
 
 auto episodeList(AnimeRecord record) {
-    import std.net.curl;
+    import std.net.curl: get;
     string animeUrl = "http://www.crunchyroll.com" ~ record.link;
 
     return animeUrl
@@ -34,7 +34,7 @@ auto episodeList(AnimeRecord record) {
 }
 
 auto recordList(string animeList) {
-    import asdf;
+    import asdf: parseJsonByLine, deserialize;
 
     return animeList.parseJsonByLine
                     .map!(o => o["data"]
@@ -44,8 +44,8 @@ auto recordList(string animeList) {
 }
 
 auto loadSeen(string path) {
-    import std.file;
-    import asdf;
+    import std.file: exists;
+    import asdf: parseJsonByLine, deserialize;
 
     int[AnimeRecord] result;
 
@@ -64,7 +64,7 @@ auto loadSeen(string path) {
 }
 
 void saveSeen(int[AnimeRecord] seen, string path) {
-    import asdf;
+    import asdf: serializeToJson;
 
     File(path, "w+").write(
         seen.byKeyValue
@@ -75,8 +75,8 @@ void saveSeen(int[AnimeRecord] seen, string path) {
 }
 
 int main(string[] args) {
-    import std.process;
-    import std.net.curl;
+    import std.process: execute;
+    import std.net.curl: byLine;
 
     if (args.length == 1) {
         writeln("Usage: crunchyroll NAME");
@@ -149,7 +149,7 @@ int main(string[] args) {
         return 1;
     }
 
-    auto play = execute(["see", "-f", toSee.front]);
+    immutable play = execute(["see", "-f", toSee.front]);
 
     if (play.status == 0) {
         seen[record]++;
