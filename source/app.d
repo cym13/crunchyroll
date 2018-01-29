@@ -52,15 +52,15 @@ auto loadSeen(string path) {
     if (!path.exists)
         return result;
 
-    return File(path, "r")
-        .byChunk(4096)
+    File(path, "r")
+        .byLine
         .parseJsonByLine
-        .map!(e =>
+        .each!(e =>
             e.byElement
-             .map!(r => [r["anime"].deserialize!AnimeRecord:
-                         r["seen"].to!int])
-             .front)
-        .front;
+             .each!(r => result[r["anime"].deserialize!AnimeRecord] =
+                                r["seen"].to!int));
+
+    return result;
 }
 
 void saveSeen(int[AnimeRecord] seen, string path) {
