@@ -152,7 +152,7 @@ void cmdStatus(int[AnimeRecord] db, string title="", int newStatus=-1) {
     if (newStatus < 0) {
         db.byKeyValue
           .filter!(kv => kv.key.match(title))
-          .each!(kv => writefln("%s [%d]", kv.key.name, kv.value));
+          .each!(kv => writefln("%0.2d\t%s", kv.value, kv.key.name));
     }
     else {
         db.keys
