@@ -113,7 +113,7 @@ int cmdAdd(int[AnimeRecord] db, string title) {
         record = recordSearch[0];
     }
     else {
-        writeln("\n* Found ", recordSearch.length, " matching animes.\n");
+        writeln("* Found ", recordSearch.length, " matching animes.\n");
 
         recordSearch.enumerate.each!((l, r) => writeln(l, "\t", r.name));
 
@@ -137,15 +137,33 @@ int cmdAdd(int[AnimeRecord] db, string title) {
         record = recordSearch[index];
     }
 
-    db[record] = 0;
+    if (record in db) {
+        writeln("* ", record.name, " is already in your list");
+    }
+    else {
+        writeln("* Adding: ", record.name);
+        db[record] = 0;
+    }
 
     return 0;
 }
 
 void cmdRemove(int[AnimeRecord] db, string title) {
-    db.keys
-      .filter!(r => r.match(title))
-      .each!(r => db.remove(r));
+    auto toRemove = db.keys
+                      .filter!(r => r.match(title))
+                      .array;
+
+    if (toRemove.length == 0) {
+        writeln("* Nothing to remove");
+    }
+    else if (toRemove.length > 1) {
+        writeln("* Too many files match this title");
+    }
+    else {
+        assert(toRemove.length == 1);
+        writeln("* Removing: ", toRemove[0].name);
+        db.remove(toRemove[0]);
+    }
 }
 
 void cmdStatus(int[AnimeRecord] db, string title="", int newStatus=-1) {
@@ -207,7 +225,7 @@ int main(string[] args) {
     if (args.length < 2 || args[1] == "status") {
         switch (args.length) {
             case 1:
-            case 2:  cmdStatus(db, "");
+            case 2:  cmdStatus(db);
                      break;
             case 3:  cmdStatus(db, args[2]);
                      break;
@@ -215,6 +233,11 @@ int main(string[] args) {
                      break;
         }
         return 0;
+    }
+
+    if (args.length < 3) {
+        writeln(help_text);
+        return 1;
     }
     else if (args[1] == "remove") {
         cmdRemove(db, args[2]);
