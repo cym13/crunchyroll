@@ -194,14 +194,14 @@ int cmdSee(int[AnimeRecord] db, string title) {
                        .drop(db[record])
                        .takeOne;
 
-    writeln("* Playing episode ", db[record] + 1,
-            " from ", record.name,
-            ": " ~ toSee.front);
-
     if (toSee.length == 0) {
         writeln("* No episode found");
         return 1;
     }
+
+    writeln("* Playing episode ", db[record] + 1,
+            " from ", record.name,
+            ": " ~ toSee.front);
 
     immutable play = execute(["see", "-f", toSee.front]);
 
