@@ -115,9 +115,13 @@ int cmdAdd(int[AnimeRecord] db, string title) {
     else {
         writeln("* Found ", recordSearch.length, " matching animes.\n");
 
+        if (recordSearch.length == 0) {
+            return 0;
+        }
+
         recordSearch.enumerate.each!((l, r) => writeln(l, "\t", r.name));
 
-        write("\n* Which one do you want to add?  ");
+        write("* Which one do you want to add?  ");
 
         uint index;
 
