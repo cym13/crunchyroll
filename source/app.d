@@ -94,6 +94,21 @@ void saveDb(int[AnimeRecord] db, string path) {
             .replace("\"value\"", "\"seen\""));
 }
 
+bool yesNo(string prompt="", bool defaultValue=false) {
+    import core.stdc.stdio: getchar;
+
+    prompt.write;
+    write(" [y/n] ");
+    switch (getchar()) {
+        case 'y':
+            return true;
+        case 'n':
+            return false;
+        default:
+            return defaultValue;
+    }
+}
+
 int cmdAdd(int[AnimeRecord] db, string title) {
     import std.net.curl: byLine;
 
@@ -250,7 +265,10 @@ int main(string[] args) {
         return 0;
     }
     else if (args[1] == "see") {
-        return cmdSee(db, args[2]);
+        auto result = cmdSee(db, args[2]);
+        if (result == 1 && yesNo("Remove this anime?"))
+            cmdRemove(db, args[2]);
+        return result;
     }
     else if (args[1] == "add") {
         return cmdAdd(db, args[2]);
