@@ -100,13 +100,15 @@ int cmdAdd(int[AnimeRecord] db, string title) {
     immutable animeListUrl = "http://www.crunchyroll.com/ajax/"
                            ~ "?req=RpcApiSearch_GetSearchCandidates";
 
-    auto recordSearch = animeListUrl.byLine
-                                    .dropOne
-                                    .front
-                                    .to!string
-                                    .recordList
-                                    .filter!(r => r.match(title))
-                                    .array;
+    auto recordSearch = animeListUrl
+                            .byLine
+                            .dropOne
+                            .front
+                            .to!string
+                            .recordList
+                            .filter!(r => r.match(title)
+                             || "http://www.crunchyroll.com" ~ r.link == title)
+                            .array;
 
     AnimeRecord record;
     if (recordSearch.length == 1) {
