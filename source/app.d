@@ -19,7 +19,7 @@ Options:
     -h, --help  Print this help and exit
 
 Commands:
-    add         Add or search for animes
+    add         Add or search for animes by TITLE or URL
     see         See the next episode of TITLE
     remove      Remove an anime by TITLE
     status      See or set the current status of all or one animes
