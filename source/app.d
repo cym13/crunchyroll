@@ -109,7 +109,7 @@ bool yesNo(string prompt="", bool defaultValue=false) {
     }
 }
 
-int cmdAdd(int[AnimeRecord] db, string title) {
+int cmdAdd(ref int[AnimeRecord] db, string title) {
     import std.net.curl: byLine;
 
     immutable animeListUrl = "http://www.crunchyroll.com/ajax/"
@@ -169,7 +169,7 @@ int cmdAdd(int[AnimeRecord] db, string title) {
     return 0;
 }
 
-void cmdRemove(int[AnimeRecord] db, string title) {
+void cmdRemove(ref int[AnimeRecord] db, string title) {
     auto toRemove = db.keys
                       .filter!(r => r.match(title))
                       .array;
@@ -187,7 +187,7 @@ void cmdRemove(int[AnimeRecord] db, string title) {
     }
 }
 
-void cmdStatus(int[AnimeRecord] db, string title="", int newStatus=-1) {
+void cmdStatus(ref int[AnimeRecord] db, string title="", int newStatus=-1) {
     if (newStatus < 0) {
         db.byKeyValue
           .filter!(kv => kv.key.match(title))
@@ -200,7 +200,7 @@ void cmdStatus(int[AnimeRecord] db, string title="", int newStatus=-1) {
     }
 }
 
-int cmdSee(int[AnimeRecord] db, string title) {
+int cmdSee(ref int[AnimeRecord] db, string title) {
     import std.process: execute;
 
     auto record = db.keys
