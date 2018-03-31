@@ -40,17 +40,19 @@ struct AnimeRecord {
 }
 
 auto episodeList(AnimeRecord record) {
-    import std.net.curl: get;
+    import std.net.curl: byLine;
+    import std.regex: regex, matchFirst;
+
+    auto episodeReg = regex("href=\"(" ~ record.link ~ ".*)\" title=\"");
+
     string animeUrl = "http://www.crunchyroll.com" ~ record.link;
 
     return animeUrl
-             .get
-             .tr("\"", "\n")
-             .splitLines
-             .filter!(l => l.canFind(record.link ~ "/episode-"))
-             .map!(p => "http://www.crunchyroll.com" ~ p.to!string)
-             .array
-             .retro;
+            .byLine
+            .filter!(l => l.matchFirst(episodeReg))
+            .map!(l => "http://www.crunchyroll.com" ~ l.split("\"")[1])
+            .array
+            .retro;
 }
 
 auto recordList(string animeList) {
