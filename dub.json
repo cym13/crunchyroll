@@ -4,7 +4,7 @@
 		"cym13"
 	],
 	"dependencies": {
-		"asdf": "~>0.1.7"
+		"asdf": "~>0.2.0"
 	},
 	"description": "Crunchyroll command-line viewer",
 	"copyright": "Copyright © 2018, Cédric Picard",
